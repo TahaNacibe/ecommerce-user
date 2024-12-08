@@ -1,6 +1,7 @@
 import React from 'react';
 import ProductItem from "../product_item";
 import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
 export default function HomeProductsSection({ title = "Featured Products", products }) {
   return (
@@ -12,10 +13,12 @@ export default function HomeProductsSection({ title = "Featured Products", produ
           <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
         </div>
         
-        <button className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors">
+        <Link
+          href={"/products"}
+          className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors">
           <span className="text-sm font-medium">View All</span>
           <ChevronRight className="w-4 h-4" />
-        </button>
+        </Link>
       </div>
 
       {/* Products grid*/}

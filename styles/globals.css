@@ -6,3 +6,7 @@
 html{
     scrollbar-width: none;
 }
+
+body {
+    font-family: 'Quicksand', sans-serif;
+  }

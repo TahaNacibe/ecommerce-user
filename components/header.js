@@ -1,19 +1,26 @@
 "use client";
-import { useEffect, useState } from 'react';
-import { ShoppingCart, User, Menu, X } from 'lucide-react';
+import { useContext, useEffect, useState } from 'react';
+import { useSession, signIn, signOut } from "next-auth/react";
+import { ShoppingCart, User, Menu, X , Home, ShoppingBasket, Tag, FeedBa} from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-
+import { CartContext } from './cart/CartContext';
+import axios from 'axios';
+const iconSize = 20
 const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/products', label: 'Products' },
-  { href: '/categories', label: 'Categories' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/', label: 'Home', icon: <Home size={iconSize} />},
+  { href: '/products', label: 'Products', icon: <ShoppingBasket size={iconSize} /> },
+  { href: '/categories', label: 'Categories', icon: <Tag size={iconSize} />},
 ];
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const [isHomeRoute, setIsHomeRoute] = useState(false);
+  const [preferences, setPreferences] = useState({
+    name: "Shop it",
+    icon: "https://cdn-icons-png.flaticon.com/512/126/126122.png"
+  })
 
   const route = useRouter();
 
@@ -25,14 +32,65 @@ export default function Header() {
     }
   }, [route]);
 
+  useEffect(() => {
+    const getPreferencesForShop = async () => {
+      const preferencesResponse = await axios.get("/api/get_preferenses")
+      setPreferences(preferencesResponse.data)
+      console.log("the pref are", preferencesResponse)
+
+    }
+    getPreferencesForShop()
+  },[])
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  //* get the cart data here
+  const { cartProducts } = useContext(CartContext);
+
+  const handleImageError = () => {
+    setImageError(true); // Set imageError to true when image fails to load
+  };
+
+  const ProfileButton = () => {
+    const { data: session } = useSession()
+
+    //* return the according widget
+    if (session) {
+      return (<Link
+        href="/profile"
+        className={`flex gap-1 ${
+          isHomeRoute || route.pathname === "/products" ? "text-white hover:text-gray-400" : "text-gray-700 hover:text-gray-900"
+        }`}
+      >
+        <div className='flex gap-2 items-center'>
+        {session.user.image && !imageError
+          ? <img src={session.user.image} className='w-8 h-8 rounded-full' alt='' onError={handleImageError} />
+          : <div className='w-8 h-8 bg-indigo-800 bg-opacity-35 items-center flex justify-center rounded-full text-white'>
+            {session.user.name[0].toUpperCase()}
+        </div>}
+        {session.user.name}
+        </div>
+      </Link>)
+    } else {
+      return (
+        <button
+            onClick={() => signIn("google")}
+            className={`flex gap-1 ${
+              isHomeRoute || route.pathname === "/products" ? "text-white hover:text-gray-400" : "text-gray-700 hover:text-gray-900"
+            }`}
+          >
+            <User className="w-6 h-6" /> Sign in
+          </button>
+      )
+    }
+  }
+
   return (
     <header
       className={`shadow-sm w-full z-50 absolute ${
-        isHomeRoute
+        isHomeRoute || route.pathname === "/products"
           ? "bg-transparent text-white"
           : "bg-white text-black"
       }`}
@@ -40,23 +98,25 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         {/* Logo Section */}
         <div>
-          <Link href="/" className="text-2xl font-bold">
-            ShopName
+          <Link href="/" className="text-2xl font-bold flex gap-2">
+            <img src={preferences.icon} className='w-9 h-9 rounded-full' alt=''/>
+            {preferences.name}
           </Link>
         </div>
 
         {/* Navigation Menu (Desktop) */}
-        <div className="hidden sm:flex items-center space-x-6">
+        <div className="hidden sm:flex items-center space-x-8">
           {navItems.map((item, index) => (
             <Link
               key={index}
               href={item.href}
-              className={`font-medium ${
-                isHomeRoute
+              className={`font-medium flex gap-2 ${
+                isHomeRoute || route.pathname === "/products"
                   ? "text-white hover:text-gray-400"
                   : "text-gray-700 hover:text-gray-900"
               }`}
             >
+              {item.icon}
               {item.label}
             </Link>
           ))}
@@ -64,24 +124,17 @@ export default function Header() {
 
         {/* Account and Cart */}
         <div className="flex items-center space-x-4">
-          <Link
-            href="/account"
-            className={`${
-              isHomeRoute ? "text-white hover:text-gray-400" : "text-gray-700 hover:text-gray-900"
-            }`}
-          >
-            <User className="w-6 h-6" />
-          </Link>
+        <ProfileButton />
           <Link
             href="/cart"
             className={`relative ${
-              isHomeRoute ? "text-white hover:text-gray-400" : "text-gray-700 hover:text-gray-900"
+              isHomeRoute || route.pathname === "/products" ? "text-white hover:text-gray-400" : "text-gray-700 hover:text-gray-900"
             }`}
           >
             <ShoppingCart className="w-6 h-6" />
-            <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full px-2 py-1 text-xs font-medium">
-              2
-            </span>
+            {cartProducts.length > 0? <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full px-2 py-1 text-xs font-medium">
+              {cartProducts.length}
+            </span> : null}
           </Link>
         </div>
 
@@ -106,7 +159,7 @@ export default function Header() {
                 key={index}
                 href={item.href}
                 className={`block px-3 py-2 rounded-md text-base font-medium ${
-                  isHomeRoute
+                  (isHomeRoute || route.pathname === "/products")
                     ? "text-white bg-black hover:bg-gray-800"
                     : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                 }`}

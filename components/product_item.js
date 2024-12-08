@@ -1,8 +1,13 @@
 import React from 'react';
+import { useContext } from 'react';
+import { CartContext } from './cart/CartContext';
 import { ShoppingCart, Heart, Star } from 'lucide-react';
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 // Main component that renders a product item with its details
 export default function ProductItem({ product }) {
+
   // Determine if the product has a discount and calculate the discount percentage
   const hasDiscount = product.isInDiscount;
   const discountPercentage = hasDiscount
@@ -10,23 +15,34 @@ export default function ProductItem({ product }) {
     : 0;
 
   return (
-    <div className="group relative rounded-xl px-4 py-2 bg-white shadow-md hover:shadow-xl transition-all duration-300">
+    <Link
+      href={`product/${product._id.toString()}`}
+      className="group relative rounded-xl px-4 py-2 bg-white shadow-md hover:shadow-xl transition-all duration-300">
       {/* Wishlist button overlay */}
-      <WishlistButton />
       
       {/* Product image and any discount/new badges */}
       <ProductImage product={product} hasDiscount={hasDiscount} discountPercentage={discountPercentage} />
       
       {/* Product details section (category, title, rating, price, stock, etc.) */}
       <ProductDetails product={product} hasDiscount={hasDiscount} />
-    </div>
+    </Link>
   );
 }
 
 // Wishlist button component (appears on hover)
 function WishlistButton() {
+  const { data: session, status } = useSession();
+  const changeFavorite = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    
+  }
+
+
   return (
-    <button className="absolute right-6 top-6 z-10 rounded-full bg-white p-2 opacity-0 shadow-md 
+    <button
+      onClick={(e) => changeFavorite(e)}
+      className="absolute right-6 top-6 z-10 rounded-full bg-white p-2 opacity-0 shadow-md 
                       group-hover:opacity-100 transition-opacity hover:bg-gray-100">
       <Heart className="h-5 w-5 text-gray-600" />
     </button>
@@ -73,6 +89,8 @@ function NewBadge() {
 
 // Product details component, includes category, title, rating, price, stock, and add to cart button
 function ProductDetails({ product, hasDiscount }) {
+
+  //* ui tree
   return (
     <div className="space-y-3">
       {/* Category label */}
@@ -82,7 +100,7 @@ function ProductDetails({ product, hasDiscount }) {
       <Title title={product.title} />
       
       {/* Rating display */}
-      <Rating rating={product.rating} />
+      {/* <Rating rating={product.rating} /> */}
       
       {/* Price section with original and discounted price (if applicable) */}
       <Price product={product} hasDiscount={hasDiscount} />
@@ -91,7 +109,7 @@ function ProductDetails({ product, hasDiscount }) {
       <StockStatus stock={product.stock} />
       
       {/* Add to cart button */}
-      <AddToCartButton />
+      <AddToCartButton productId={product._id} />
     </div>
   );
 }
@@ -171,15 +189,30 @@ function StockStatus({ stock }) {
 }
 
 // Add to cart button component
-function AddToCartButton() {
+function AddToCartButton(productId) {
+  //* provider data (or that only a flutter thing (?u0))
+  const { isProductInTheCart, changeProductStateInCart } = useContext(CartContext)
+  const isInCart = isProductInTheCart(productId)
+
+  //* function
+  const handleButton = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    changeProductStateInCart(productId)
+  }
+
+  //* ui tree
   return (
     <button
-      className="w-full bg-black hover:bg-gray-950 text-white py-3 px-4 rounded-lg
+      onClick={(e) => handleButton(e) }
+      className={`
+        w-full hover:bg-gray-950 text-white py-3 px-4 rounded-lg
                  flex items-center justify-center space-x-2 transition-all duration-300
-                 transform hover:translate-y-[-2px] shadow-md hover:shadow-lg"
+                 transform hover:translate-y-[-2px] shadow-md hover:shadow-lg ${isInCart? "bg-gray-600" : "bg-black"}
+        `}
     >
       <ShoppingCart className="w-5 h-5" />
-      <span className="font-medium">Add to Cart</span>
+      <span className="font-medium">{isInCart? "In cart" : "Add to Cart" }</span>
     </button>
   );
 }

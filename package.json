@@ -9,12 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/mongodb-adapter": "^3.7.3",
+    "axios": "^1.7.7",
     "lucide-react": "^0.456.0",
+    "micro": "^10.0.1",
     "mongodb": "^6.10.0",
     "mongoose": "^8.8.1",
     "next": "15.0.3",
+    "next-auth": "^4.24.10",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
+    "shadcn-ui": "^0.9.3",
+    "stripe": "^17.3.1",
     "styled-components": "^6.1.13"
   },
   "devDependencies": {
