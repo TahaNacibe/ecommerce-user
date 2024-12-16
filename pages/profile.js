@@ -21,14 +21,11 @@ const ProfilePage = () => {
         const getTheOrdersData = async () => {
             if (session?.user?.email) {
                 try {
-                    console.log("Fetching orders for:", session.user.email);
                     const response = await OrderServices.getUserOrdersHistory(session.user.email);
-                    console.log("Orders Response:", response);
 
                     if (Array.isArray(response) && response.length > 0) {
                         setUserOrders(response);
                     } else {
-                        console.log("No orders found or invalid response:", response);
                         setUserOrders([]);
                     }
                     setIsLoading(false);
@@ -45,7 +42,7 @@ const ProfilePage = () => {
         if (session && status === 'authenticated') {
             getTheOrdersData();
         } else {
-            console.log("Session not authenticated yet");
+            throw("Session not authenticated yet");
         }
     }, [session, status]);
 

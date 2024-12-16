@@ -11,12 +11,10 @@ const handler = async (req, res) => {
 
         // Access the email from the query parameters
         const { ownerEmail } = req.query; // Changed from req.body to req.query
-        console.log("Owner email is for now", ownerEmail);
 
         if (ownerEmail) {
             // Get the user additional information
             const userInfo = await UserProfile.findOne({ email: ownerEmail });
-            console.log("the details will be soon", userInfo.orders)
             // Get orders from the order collection
             const userOrders = await Order.find({ _id: userInfo.orders }, null, { sort: { "updatedAt": 1 } });
             

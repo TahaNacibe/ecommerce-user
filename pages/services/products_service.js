@@ -30,10 +30,8 @@ class ProductsService {
             const queryString = ids.length > 0 ? `${encodeURIComponent(ids.join(","))}` : "";
             const response = await fetch(`/api/getCartProducts?productsIds=${queryString}`)
             const result = await response.json()
-            console.log("response is from server", response)
             return result
         } catch (error) {
-            console.error("error happened when fetching products for user carts: ", error)
             throw error
         }
     }

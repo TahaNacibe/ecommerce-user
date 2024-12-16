@@ -41,30 +41,32 @@ export default function AutoCarousel({ products }) {
                         className="w-full flex-shrink-0 relative pt-16 md:pt-24 py-4 md:py-8 px-2 md:px-4"
                         key={`${product._id}-${index}`}
                     >
-                        {/* Background image with blur */}
-                        <div 
+                        {/* Advanced background blending */}
+                        <div
                             className="absolute inset-0 bg-cover bg-center"
                             style={{
                                 backgroundImage: `url(${product.image})`,
-                                filter: 'blur(20px)',
+                                filter: 'blur(20px) brightness(50%)',
                                 transform: 'scale(1.1)',
-                                opacity: '0.4'
+                                backgroundBlendMode: 'multiply',
+                                backgroundColor: 'rgba(0,0,0,0.7)'
                             }}
                         />
-                        
-                        {/* Gradient overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/90 to-black/75" />
-
+    
+                        {/* Gradient overlay for additional depth */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/60" />
+    
                         {/* Content container */}
                         <div className="relative h-full flex flex-col lg:flex-row items-center px-4 md:px-8 lg:px-16 gap-8">
                             <DetailsSection product={product} />
+                            
                             {/* Image container */}
                             <div className="w-full lg:w-1/3 h-full relative order-first lg:order-last pb-4">
                                 <div className="w-full max-w-[300px] mx-auto lg:max-w-none">
-                                    <img 
-                                        src={product.image} 
-                                        alt={product.title} 
-                                        className="w-full h-auto object-contain"
+                                    <img
+                                        src={product.image}
+                                        alt={product.title}
+                                        className="w-full h-auto object-contain rounded-lg shadow-xl"
                                     />
                                 </div>
                             </div>
@@ -72,7 +74,7 @@ export default function AutoCarousel({ products }) {
                     </div>
                 ))}
             </div>
-
+    
             {/* Navigation buttons */}
             <CarouselButton isRight={false} onClickAction={goToPrevious} />
             <CarouselButton isRight={true} onClickAction={goToNext} />
@@ -110,7 +112,7 @@ function DetailsSection({ product }) {
                     {/* old price */}
                     <TagElement bgColor="bg-blue-900">
                         <Tag size={16} className="" />
-                        <h2 className="text-lg md:text-xl line-through text-white">
+                        <h2 className={`text-lg md:text-xl ${product.isInDiscount? "line-through" : ""} text-white`}>
                             ${product.price}
                         </h2>
                     </TagElement>
@@ -147,6 +149,7 @@ function ButtonWarper(productId) {
     const { isProductInTheCart, changeProductStateInCart } = useContext(CartContext);
     const isInCart = isProductInTheCart(productId);
     
+    
     return (
         <div className="flex flex-col sm:flex-row gap-2 md:gap-4 p-1">
             <Link href={`product/${productId.productId}`} className="w-full sm:w-auto">
@@ -159,7 +162,7 @@ function ButtonWarper(productId) {
             <CostumeButton 
                 bgColor={isInCart ? "bg-gray-700" : "bg-indigo-800"}
                 text={isInCart ? "Remove from cart" : "Add To cart"}
-                onClickAction={() => changeProductStateInCart(productId)}
+                onClickAction={() => changeProductStateInCart(productId,!isInCart)}
                 icon={isInCart ? <Trash2Icon size={16} className="" /> : <ShoppingCart size={16} className="" />}
                 className="w-full sm:w-auto"
             />

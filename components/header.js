@@ -36,7 +36,6 @@ export default function Header() {
     const getPreferencesForShop = async () => {
       const preferencesResponse = await axios.get("/api/get_preferenses")
       setPreferences(preferencesResponse.data)
-      console.log("the pref are", preferencesResponse)
 
     }
     getPreferencesForShop()

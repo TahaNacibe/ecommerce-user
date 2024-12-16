@@ -18,7 +18,6 @@ const handler = async (req = NextApiRequest, res = NextApiResponse) => {
     const buf = await buffer(req); // Read the raw body as a buffer
     const event = JSON.parse(buf.toString()); // Parse the JSON
 
-    console.log("the before switch ------------------------------->")
     // Handle the event
     switch (event.type) {
       case 'checkout.session.completed':
@@ -30,10 +29,9 @@ const handler = async (req = NextApiRequest, res = NextApiResponse) => {
             isPaid:true
           })
         }
-        console.log("Checkout session completed:", session);
         break;
       default:
-        console.log(`Unhandled event type: ${event.type}`);
+        throw(`Unhandled event type: ${event.type}`);
     }
     
 

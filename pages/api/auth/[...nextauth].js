@@ -23,7 +23,6 @@ export const authOptions = {
       const client = await clientPromise;  // Resolving the client from clientPromise
       const usersCollection = client.db().collection('users');
           const userProfilesCollection = client.db().collection('user_profiles');
-          console.log("the user ",user,"the account: ",account, "the profile :",profile)
   
       // Check if the user already exists
       const existingUser = await usersCollection.findOne({ email: user.email });
@@ -47,9 +46,7 @@ export const authOptions = {
       
       // Fetch the user's profile data from the user_profiles collection
         const userProfile = await client.db().collection('user_profiles').findOne({ email: user.email });
-        console.log("user profile ",userProfile, "user id", user._id,)
         if (userProfile) {
-            console.log("user profile 2 ",userProfile)
             // Attach the profile data to the session object
             session.user.role = userProfile.role;
             session.user.orders = userProfile.orders;

@@ -10,7 +10,6 @@ const handler = async (req, res) => {
         
         //* get request data
         const { searchQuery } = req.query
-        console.log("search query server side", req.query)
         //* get the data 
         if (searchQuery != "") {
             const data = await Product.find({ title: { $regex: searchQuery, $options: "i" } }, null, { sort: { "updatedAt": 1 }  })

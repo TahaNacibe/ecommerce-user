@@ -13,7 +13,6 @@ export default async function handler(req, res) {
 
     //* get the passed data
     const { name, email, address, phoneNumber, city, postalCode, country, cartProducts, senderEmail } = req.body
-    console.log("the user email ",senderEmail)
     await mongooseConnect()
 
     //* get data
@@ -25,13 +24,11 @@ export default async function handler(req, res) {
     //* structure data
     let line_items = []
     for (const productId of uniqIds) {
-        console.log("get the item and start working")
         //? get the item info
         const productInfo = productsInfo.find(product => product._id.toString() === productId)
         //? get the item count
         const quantity = productsList.filter(p => p === productId)?.length || 0;
         if (quantity > 0 && productInfo) {
-            console.log("put the item")
             line_items.push({
                 quantity,
                 price_data: {

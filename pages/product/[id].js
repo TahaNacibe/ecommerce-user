@@ -3,6 +3,7 @@ import mongooseConnect from '@/lib/mongoose';
 import { Box,ShoppingCart, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Product } from '@/models/product';
 import { CartContext } from '@/components/cart/CartContext';
+import Category from '@/models/category';
 
 function ProductInfoPage({ product, categories }) {
     const [isImageView, setImageView] = useState(0);
@@ -64,7 +65,8 @@ function ProductInfoPage({ product, categories }) {
         setIsViewOpen(false);
     };
 
-    const openImageView = () => {
+    const openImageView = (imageIndex) => {
+        setImageView(imageIndex)
         setIsViewOpen(true);
     };
 
@@ -75,9 +77,9 @@ function ProductInfoPage({ product, categories }) {
     return (
         <>
             {isViewOpen && <ImageBigView otherImages={otherImages} closeView={closeImageView} />}
-            <div className="pt-20 md:grid md:grid-cols-2 gap-8 bg-white md:p-0 p-2">
+            <div className="pt-20 md:grid md:grid-cols-2 gap-8 bg-white md:pt-20 p-2">
                 {/* Image Section */}
-                <ImageWidget product={product} otherImages={otherImages} openImageView={openImageView} />
+                <ImageWidget product={product} otherImages={otherImages} openImageView={(selectedIndex) => openImageView(selectedIndex)} />
 
                 {/* Details Section */}
                 <div className='pt-4 '>
@@ -132,7 +134,7 @@ const ImageWidget = ({ product, otherImages, openImageView }) => {
                         <div
                             key={i}
                             className="relative group overflow-hidden rounded-lg border border-gray-200 hover:shadow-md"
-                            onClick={() => openImageView()} // Open on image click
+                            onClick={() => openImageView(i)} // Open on image click
                         >
                             <img
                                 src={url}
@@ -258,9 +260,10 @@ export async function getServerSideProps(context) {
   await mongooseConnect();
   const { id } = context.query;
 
-  try {
+    try {
+        // have no idea why is that working but don't remove it otherwise it stop
+        Category.call(null)
       const product = await Product.findById(id).populate("categories").lean();
-      console.log("the test say ", product)
       if (!product) return { notFound: true };
       return {
           props: {

@@ -13,10 +13,8 @@ const handler = async (req, res) => {
         let { productsIds } = req.query
         // Check if productsIds is a string and split it into an array
         productsIds = productsIds.split(",");
-        console.log(productsIds)
         //* get the data
         const response = await Product.find({ _id: productsIds }, null, { sort: { "updatedAt": 1 } })
-        console.log("the servers say",response)
         res.status(200).json(response)
     } catch (error) {
         //* in error case

@@ -5,7 +5,6 @@ const handler = async (req, res) => {
     try {
         // Get the request parameters
         const { categories } = req.query;
-        console.log("Server-side request categories:", categories);
 
         // Split categories string into an array
         const categoryArray = categories ? categories.split('_') : [];
@@ -16,7 +15,6 @@ const handler = async (req, res) => {
         }
 
         if (categoryArray && categoryArray.length > 0) {
-            console.log("we are in that case")
             // Fetch the data
             const data = await Product.find(
                 { categories: { $in: categoryArray } },
@@ -26,7 +24,6 @@ const handler = async (req, res) => {
     
             res.status(200).json(data);
         } else {
-            console.log("we are here ")
              // Fetch the data
              const data = await Product.find(
                 {},
