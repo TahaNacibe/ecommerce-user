@@ -12,7 +12,7 @@ export const authOptions = {
         params: {
           prompt: 'select_account',
           access_type: 'offline',
-          redirect_uri:"https://yoursite.netlify.app/api/auth/callback/google"
+          redirect_uri:"https://yukishop.netlify.app/api/auth/callback/google"
         },
       },
     }),
