@@ -22,7 +22,8 @@ function ProductInfoPage({ product, categories }) {
         };
     }, [isViewOpen]);
 
-    const handleImageSwitch = (otherImages, forward) => {
+    const handleImageSwitch = (otherImages, forward, e) => {
+        e.preventDefault()
         if (!Array.isArray(otherImages) || otherImages.length === 0) {
             console.error("otherImages is not a valid array or is empty");
             return;
@@ -43,16 +44,16 @@ function ProductInfoPage({ product, categories }) {
         return (
             <div className='bg-black bg-opacity-40 w-screen h-screen z-50 absolute overflow-hidden items-center flex justify-between justify-items-center scroll-m-0'>
                 <div
-                    onClick={() => { handleImageSwitch(otherImages, false); }}
-                    className='bg-white/20 rounded-md m-4 py-8 px-4 cursor-pointer'>
+                    onClick={(e) => { handleImageSwitch(otherImages, false, e); }}
+                    className='bg-white/20 rounded-md m-4 py-8 px-4 cursor-pointer z-10 select-none'>
                     <ChevronLeft />
                 </div>
                 <Image layout="fill" // Fills the parent container
                     objectFit="contain"
-                    src={otherImages[isImageView]} className='h-screen p-4' alt='' />
+                    src={otherImages[isImageView]} className='h-screen p-4 z-0 select-none' alt='' />
                 <div
-                    onClick={() => { handleImageSwitch(otherImages, true); }}
-                    className='bg-white/20 rounded-md m-4 py-8 px-4 cursor-pointer'>
+                    onClick={(e) => { handleImageSwitch(otherImages, true, e); }}
+                    className='bg-white/20 rounded-md m-4 py-8 px-4 cursor-pointer z-10 select-none'>
                     <ChevronRight />
                 </div>
                 <button

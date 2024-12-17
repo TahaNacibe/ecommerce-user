@@ -12,8 +12,12 @@ export default function Document() {
         href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&display=swap" 
         rel="stylesheet" 
       />
-      
-      <Head />
+      <Head>
+      <meta property="og:title" content="YukiShop" />
+        <meta name="google-site-verification" content="mahsJqQPMTGTN9VzhF7sfIHNUa7N0GE72eKkMDBCX_4" />
+        <meta name="description" content="A Template of a e-comarece website it's a portfolio project don't bother using it" />
+        
+      </ Head>
       
       <body className="antialiased">
         <Main />

@@ -64,9 +64,8 @@ export default function AutoCarousel({ products }) {
                             {/* Image container */}
                             <div className="w-full lg:w-1/3 h-full relative order-first lg:order-last pb-4">
                                 <div className="w-full max-w-[300px] mx-auto lg:max-w-none">
-                                    <Image
-                                        width={300}
-                                        height={300}
+                                    <img
+                                       
                                         src={product.image}
                                         alt={product.title}
                                         className="w-full h-auto object-contain rounded-lg shadow-xl"
