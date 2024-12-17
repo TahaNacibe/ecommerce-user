@@ -39,12 +39,12 @@ export default function AutoCarousel({ products }) {
             >
                 {products.map((product, index) => (
                     <div
-                        className="w-full flex-shrink-0 relative pt-16 md:pt-24 py-4 md:py-8 px-2 md:px-4"
+                        className="w-full flex-shrink-0 relative pt-24 md:pt-24 py-4 md:py-8 px-2 md:px-4"
                         key={`${product._id}-${index}`}
                     >
                         {/* Advanced background blending */}
                         <div
-                            className="absolute inset-0 bg-cover bg-center"
+                            className="absolute inset-0 bg-cover bg-center "
                             style={{
                                 backgroundImage: `url(${product.image})`,
                                 filter: 'blur(20px) brightness(50%)',

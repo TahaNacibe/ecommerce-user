@@ -102,7 +102,11 @@ export default function Header() {
         <div>
           <Link href="/" className="text-2xl font-bold flex gap-2 text-center align-middle justify-center">
             <Image width={150} height={150} src={preferences.icon} className='w-9 h-9 rounded-full' alt=''/>
-            <h1 className='md:text-base text-sm'>{preferences.name}</h1>
+            <div className='md:text-base text-sm text-center items-center align-middle flex'>
+              <h1>
+              {preferences.name}
+              </h1>
+            </div>
           </Link>
         </div>
 
@@ -155,7 +159,7 @@ export default function Header() {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="sm:hidden shadow-md ">
-          <div className="px-2 pt-2 pb-3 space-y-1 bg-white text-black">
+          <div className={`px-2 pt-2 pb-3 space-y-1 ${isHomeRoute? "bg-black/80 text-white" : "bg-white/80 text-black"}`}>
             {navItems.map((item, index) => (
               <Link
                 onClick={()=> setIsMenuOpen(!isMenuOpen)}

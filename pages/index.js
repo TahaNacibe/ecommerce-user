@@ -8,7 +8,7 @@ import HomeProductsSection from "@/components/homePageComponents/product_section
 
 export default function Home({ products, lastProductsList }) {
   return (
-    <section className="overflow-x-hidden " id="HomePage">
+    <section className="overflow-x-hidden" id="HomePage">
       {/* important item show */}
       <HotOffersDisplay products={products} />
       {/* display the items grid  */}
