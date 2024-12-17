@@ -50,8 +50,8 @@ export default async function handler(req, res) {
         line_items,
         mode: "payment",
         customer_email: email,
-        success_url: "http://localhost:3000/cart?success=1",
-        cancel_url: "http://localhost:3000/cart?canceled=1",
+        success_url: "https://yukishop.netlify.app/cart?success=1",
+        cancel_url: "https://yukishop.netlify.app/cart?canceled=1",
         metadata:{orderId:orderDoc._id.toString()}
     })
 
