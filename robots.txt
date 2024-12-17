@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://yukishop.netlify.app
+
+# Sitemaps
+Sitemap: https://yukishop.netlify.app/sitemap.xml
