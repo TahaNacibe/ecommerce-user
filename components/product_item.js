@@ -4,6 +4,7 @@ import { CartContext } from './cart/CartContext';
 import { ShoppingCart, Heart, Star } from 'lucide-react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 
 // Main component that renders a product item with its details
 export default function ProductItem({ product }) {
@@ -54,7 +55,8 @@ function ProductImage({ product, hasDiscount, discountPercentage }) {
   return (
     <div className="relative aspect-square mb-4 overflow-hidden rounded-xl">
       {/* Product image with hover effect */}
-      <img
+      <Image
+        fill={true}
         className="object-cover w-full h-full transform group-hover:scale-110 transition-transform duration-500 ease-out"
         src={product.image}
         alt={product.title}

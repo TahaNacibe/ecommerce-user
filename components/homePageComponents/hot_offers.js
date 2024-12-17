@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, Tag, Flame, ShoppingCart, Trash2Icon } from 
 import CostumeButton from "../costume_button";
 import { CartContext } from "../cart/CartContext";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function AutoCarousel({ products }) {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -63,7 +64,9 @@ export default function AutoCarousel({ products }) {
                             {/* Image container */}
                             <div className="w-full lg:w-1/3 h-full relative order-first lg:order-last pb-4">
                                 <div className="w-full max-w-[300px] mx-auto lg:max-w-none">
-                                    <img
+                                    <Image
+                                        width={300}
+                                        height={300}
                                         src={product.image}
                                         alt={product.title}
                                         className="w-full h-auto object-contain rounded-lg shadow-xl"

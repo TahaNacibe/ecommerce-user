@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Search, SlidersHorizontal, X, Loader2 } from "lucide-react";
 import ProductItem from "@/components/product_item";
-import ProductsService from "./services/products_service";
+import ProductsService from "../services/products_service";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 
 // Custom Alert Component
@@ -81,6 +82,7 @@ const ProductSkeleton = () => (
 // Main Products Page Component
 export default function ProductsPage({ initialProductsList }) {
     const router = useRouter();
+    const productServices = new ProductsService()
     const { search } = router.query;
     
     // State management
@@ -115,7 +117,7 @@ export default function ProductsPage({ initialProductsList }) {
         try {
             setIsLoading(true);
             setError(null);
-            const data = await ProductsService.getProducts(searchQuery);
+            const data = await productServices.getProducts(searchQuery);
             if (data) {
                 setProductsList(data);
             }
@@ -349,7 +351,9 @@ const DataDisplay = ({ productsList, searchQuery, orderBy, priceRange, isLoading
 function NoResultWidget() {
     return (
         <div className="flex flex-col items-center justify-center py-16 bg-white rounded-xl shadow-sm border border-gray-100 px-4">
-            <img 
+            <Image
+                width={300}
+            height={300}    
                 src='/nothing.svg' 
                 alt='No products found' 
                 className="w-64 h-64 mb-8 opacity-75" 
@@ -358,7 +362,7 @@ function NoResultWidget() {
                 No Products Found
             </h3>
             <p className="text-gray-600 text-center max-w-md">
-                Try adjusting your filters or search terms to find what you're looking for.
+                Try adjusting your filters or search terms to find what you&apos;re looking for.
             </p>
         </div>
     );

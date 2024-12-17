@@ -1,12 +1,14 @@
 import { CartContext } from "@/components/cart/CartContext";
 import { useContext, useEffect, useState } from "react";
-import ProductsService from "./services/products_service";
+import ProductsService from "../services/products_service";
 import { Plus, Minus, Trash2, X, CircleCheck, CircleX} from "lucide-react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 export default function UserCartPage() {
     const { data: session } = useSession()
+    const productServices = new ProductsService()
     // Managing the page vars
     const [products, setProducts] = useState([]);
     const [loading, setLoadingState] = useState(true);
@@ -59,7 +61,7 @@ export default function UserCartPage() {
     useEffect(() => {
         const getUserProductsList = async () => {
             const uniqIds = [...new Set(cartProducts)];
-            const response = await ProductsService.getTheUserCartProductsList(uniqIds);
+            const response = await productServices.getTheUserCartProductsList(uniqIds);
             if (response && response.length > 0) {
                 setProducts(response);
             }
@@ -268,7 +270,13 @@ export default function UserCartPage() {
     if (products.length === 0 || cartProducts.length === 0) {
         return (
             <div className="items-center flex justify-items-center justify-center h-screen">
-                <img src='empty_cart.svg' className="h-1/3 w-1/3" alt='Empty cart'/>
+                            <Image
+                src="/empty_cart.svg"
+                    alt="Empty cart"
+                    width={300}
+                height={300}     // The image will fill the parent div
+        objectFit="contain" // This ensures responsiveness
+                />
             </div>
         );
     }
@@ -297,7 +305,9 @@ export default function UserCartPage() {
                                     <tr key={product._id} className="border-b">
                                         <td className="p-4">
                                             <div className="flex items-center">
-                                                <img 
+                                                <Image 
+                                                    width={150}
+                                                    height={150}
                                                     src={product.image} 
                                                     alt={product.title} 
                                                     className="w-16 h-16 object-cover mr-4 border rounded-lg p-1"

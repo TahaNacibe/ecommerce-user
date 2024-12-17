@@ -4,6 +4,7 @@ import { Box,ShoppingCart, Heart, ChevronLeft, ChevronRight } from 'lucide-react
 import { Product } from '@/models/product';
 import { CartContext } from '@/components/cart/CartContext';
 import Category from '@/models/category';
+import Image from 'next/image';
 
 function ProductInfoPage({ product, categories }) {
     const [isImageView, setImageView] = useState(0);
@@ -46,7 +47,9 @@ function ProductInfoPage({ product, categories }) {
                     className='bg-white/20 rounded-md m-4 py-8 px-4 cursor-pointer'>
                     <ChevronLeft />
                 </div>
-                <img src={otherImages[isImageView]} className='h-screen p-4' alt='' />
+                <Image layout="fill" // Fills the parent container
+                    objectFit="contain"
+                    src={otherImages[isImageView]} className='h-screen p-4' alt='' />
                 <div
                     onClick={() => { handleImageSwitch(otherImages, true); }}
                     className='bg-white/20 rounded-md m-4 py-8 px-4 cursor-pointer'>
@@ -114,7 +117,9 @@ const ImageWidget = ({ product, otherImages, openImageView }) => {
         <div className="p-4 bg-white rounded-lg">
             {/* Main Image Section */}
             <div className="relative mb-4">
-                <img
+                <Image
+                    width={300}
+                    height={300}
                     src={product.image}
                     alt={product.title}
                     className="h-auto w-full object-cover rounded-lg transition-transform duration-300 hover:scale-105"
@@ -136,7 +141,9 @@ const ImageWidget = ({ product, otherImages, openImageView }) => {
                             className="relative group overflow-hidden rounded-lg border border-gray-200 hover:shadow-md"
                             onClick={() => openImageView(i)} // Open on image click
                         >
-                            <img
+                            <Image
+                                width={300}
+                                height={300}
                                 src={url}
                                 alt={`Image ${i}`}
                                 className="h-full w-full object-cover rounded-lg transition-transform duration-300 group-hover:scale-110"

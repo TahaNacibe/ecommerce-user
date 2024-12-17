@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { CartContext } from './cart/CartContext';
 import axios from 'axios';
+import Image from 'next/image';
 const iconSize = 20
 const navItems = [
   { href: '/', label: 'Home', icon: <Home size={iconSize} />},
@@ -65,7 +66,7 @@ export default function Header() {
       >
         <div className='flex gap-2 items-center'>
         {session.user.image && !imageError
-          ? <img src={session.user.image} className='w-8 h-8 rounded-full' alt='' onError={handleImageError} />
+          ? <Image width={150} height={150} src={session.user.image} className='w-8 h-8 rounded-full' alt='' onError={handleImageError} />
           : <div className='w-8 h-8 bg-indigo-800 bg-opacity-35 items-center flex justify-center rounded-full text-white'>
             {session.user.name[0].toUpperCase()}
         </div>}
@@ -98,7 +99,7 @@ export default function Header() {
         {/* Logo Section */}
         <div>
           <Link href="/" className="text-2xl font-bold flex gap-2">
-            <img src={preferences.icon} className='w-9 h-9 rounded-full' alt=''/>
+            <Image width={150} height={150} src={preferences.icon} className='w-9 h-9 rounded-full' alt=''/>
             {preferences.name}
           </Link>
         </div>

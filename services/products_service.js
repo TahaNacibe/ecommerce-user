@@ -1,6 +1,6 @@
 class ProductsService {
     //* get products on search
-    static async getProducts(searchQuery = "") {
+    async getProducts(searchQuery = "") {
         try {
             const response = await fetch(`/api/fetchData?searchQuery=${searchQuery}`);
             const result = await response.json();
@@ -12,7 +12,7 @@ class ProductsService {
     }
 
     //* get products with categories
-    static async getProductsByCategoriesFilter(categories = []) {
+    async getProductsByCategoriesFilter(categories = []) {
         try {
             const response = await fetch(`/api/getProductsByCategory?categories=${categories.join("_")}`)
             const result = await response.json()
@@ -25,7 +25,7 @@ class ProductsService {
 
 
     //* get products for cart
-    static async getTheUserCartProductsList(ids = []) {
+    async getTheUserCartProductsList(ids = []) {
         try {
             const queryString = ids.length > 0 ? `${encodeURIComponent(ids.join(","))}` : "";
             const response = await fetch(`/api/getCartProducts?productsIds=${queryString}`)

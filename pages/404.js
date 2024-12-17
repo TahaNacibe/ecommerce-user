@@ -1,11 +1,10 @@
-"use client"
+"use client";
 import { Home, ArrowLeft } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function NotFoundPage() {
-
-
   return (
     <div className=" bg-white flex items-center justify-center pt-20">
       <div className="h-full w-full bg-white rounded-2xl p-8 md:p-12">
@@ -13,11 +12,14 @@ export default function NotFoundPage() {
 
           {/* Illustration Section */}
           <div className="md:order-2 order-1">
-            <img
+            <Image
+              width={300}
+              height={300}
               src="/404_error.svg"
               alt="404 Error Illustration"
               className="w-full max-w-md mx-auto md:h-auto h-40"
             />
+          </div>
           {/* Content Section */}
           <div className="p-8 md:order-1 order-2 absolute bottom-0">
             <div className="space-y-2">
@@ -25,7 +27,7 @@ export default function NotFoundPage() {
                 404 - Page Not Found
               </h1>
               <p className="md:text-xl text-gray-600">
-                Oops! We couldn't find what you're looking for.
+                Oops! We couldn&apos;t find what you&apos;re looking for.
               </p>
             </div>
 
@@ -45,7 +47,6 @@ export default function NotFoundPage() {
                 Go Back
               </button>
             </div>
-          </div>
           </div>
         </div>
       </div>

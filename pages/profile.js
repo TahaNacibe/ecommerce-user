@@ -1,9 +1,11 @@
 import { signIn, useSession, signOut } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { Key, LogOut } from 'lucide-react';
-import OrderServices from './services/order_services';
+import OrderServices from '../services/order_services';
+import Image from 'next/image';
 
 const ProfilePage = () => {
+    const orderServices = new OrderServices()
     const { data: session, status } = useSession();
     const [userOrders, setUserOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -21,7 +23,7 @@ const ProfilePage = () => {
         const getTheOrdersData = async () => {
             if (session?.user?.email) {
                 try {
-                    const response = await OrderServices.getUserOrdersHistory(session.user.email);
+                    const response = await orderServices.getUserOrdersHistory(session.user.email);
 
                     if (Array.isArray(response) && response.length > 0) {
                         setUserOrders(response);
@@ -67,7 +69,10 @@ const ProfilePage = () => {
     if (!session) {
         return (
             <div className='h-screen w-screen items-center flex justify-center flex-col gap-12 pt-20'>
-                <img src='log_in.svg' className='w-1/2 h-1/2' alt='' />
+                <Image
+                    height={300}
+                    width={300}
+                    src='log_in.svg' className='w-1/2 h-1/2' alt='' />
                 <div
                     onClick={() => signIn("google")}
                     className='rounded-lg bg-indigo-800 px-4 py-3 text-white flex gap-4 cursor-pointer'>
@@ -88,8 +93,13 @@ const ProfilePage = () => {
 
     if (userOrders.length === 0) {
         return (
-            <div className="pt-20">
-                <h1>No orders found</h1>
+            <div className="pt-40 justify-center items-center justify-items-center">
+                <Image 
+                    alt='no data image'
+                    width={300}
+                    height={300}
+                src={"nothing.svg"}
+                />
             </div>
         );
     }
@@ -98,7 +108,7 @@ const ProfilePage = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
             <div className='flex justify-between items-center'>
                 <div className="flex items-center mb-6">
-                    <img src={session.user.image} alt="Profile Picture" className="rounded-full w-20 h-20 mr-4" />
+                    <Image width={150} height={150} src={session.user.image} alt="Profile Picture" className="rounded-full w-20 h-20 mr-4" />
                     <div>
                         <h1 className="text-2xl font-bold">{session.user.name}</h1>
                         <p className="text-gray-500">{session.user.email}</p>

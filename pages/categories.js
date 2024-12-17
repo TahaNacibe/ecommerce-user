@@ -4,10 +4,11 @@ import { useState, useEffect } from "react"
 import  Category  from "@/models/category"
 import { useRouter } from "next/router"
 import ProductItem from "@/components/product_item"
-import ProductsService from "./services/products_service"
+import ProductsService from "../services/products_service"
 
 export default function CategoriesPage({ categoriesList }) {
   const router = useRouter();
+  const productServices = new ProductsService()
 
   // State management variables
   const [selectedTags, setSelectedTags] = useState([]);
@@ -25,7 +26,7 @@ export default function CategoriesPage({ categoriesList }) {
 
     const getProductsList = async () => {
       if (selectedTags.length === 0) {
-        const data = await ProductsService.getProductsByCategoriesFilter();
+        const data = await productServices.getProductsByCategoriesFilter();
         setProductsList(data);
       }
     };
@@ -42,7 +43,7 @@ export default function CategoriesPage({ categoriesList }) {
     setSelectedTags(updatedTags);
 
     // Fetch products by selected categories
-    const productsList = await ProductsService.getProductsByCategoriesFilter(
+    const productsList = await productServices.getProductsByCategoriesFilter(
       updatedTags.map(selectedTag => categoriesList.find(cat => cat.name === selectedTag)._id)
     );
     setProductsList(productsList);
