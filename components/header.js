@@ -69,8 +69,10 @@ export default function Header() {
           ? <Image width={150} height={150} src={session.user.image} className='w-8 h-8 rounded-full' alt='' onError={handleImageError} />
           : <div className='w-8 h-8 bg-indigo-800 bg-opacity-35 items-center flex justify-center rounded-full text-white'>
             {session.user.name[0].toUpperCase()}
-        </div>}
+            </div>}
+          <div className='md:flex hidden'>
         {session.user.name}
+          </div>
         </div>
       </Link>)
     } else {
@@ -98,9 +100,9 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         {/* Logo Section */}
         <div>
-          <Link href="/" className="text-2xl font-bold flex gap-2">
+          <Link href="/" className="text-2xl font-bold flex gap-2 text-center align-middle justify-center">
             <Image width={150} height={150} src={preferences.icon} className='w-9 h-9 rounded-full' alt=''/>
-            {preferences.name}
+            <h1 className='md:text-base text-sm'>{preferences.name}</h1>
           </Link>
         </div>
 
@@ -142,7 +144,7 @@ export default function Header() {
         <div className="sm:hidden">
           <button
             type="button"
-            className="bg-gray-100 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+            className=" rounded-md p-2 inline-flex items-center justify-center text-gray-400  focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
             onClick={toggleMenu}
           >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -152,16 +154,17 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="sm:hidden bg-white shadow-md">
-          <div className="px-2 pt-2 pb-3 space-y-1">
+        <div className="sm:hidden shadow-md ">
+          <div className="px-2 pt-2 pb-3 space-y-1 bg-white text-black">
             {navItems.map((item, index) => (
               <Link
+                onClick={()=> setIsMenuOpen(!isMenuOpen)}
                 key={index}
                 href={item.href}
                 className={`block px-3 py-2 rounded-md text-base font-medium ${
                   (isHomeRoute || route.pathname === "/products")
-                    ? "text-white bg-black hover:bg-gray-800"
-                    : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                    ? " hover:bg-gray-800"
+                    : " hover:bg-gray-100 hover:text-gray-900"
                 }`}
               >
                 {item.label}

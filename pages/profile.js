@@ -43,9 +43,7 @@ const ProfilePage = () => {
 
         if (session && status === 'authenticated') {
             getTheOrdersData();
-        } else {
-            throw("Session not authenticated yet");
-        }
+        } 
     }, [session, status]);
 
     // Calculate total amount when orders change
@@ -70,8 +68,8 @@ const ProfilePage = () => {
         return (
             <div className='h-screen w-screen items-center flex justify-center flex-col gap-12 pt-20'>
                 <Image
-                    height={300}
-                    width={300}
+                    height={800}
+                    width={800}
                     src='log_in.svg' className='w-1/2 h-1/2' alt='' />
                 <div
                     onClick={() => signIn("google")}
@@ -91,7 +89,7 @@ const ProfilePage = () => {
         );
     }
 
-    if (userOrders.length === 0) {
+    NoOrder = () => {
         return (
             <div className="pt-40 justify-center items-center justify-items-center">
                 <Image 
@@ -105,7 +103,7 @@ const ProfilePage = () => {
     }
 
     return (
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+        <div className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-8 pt-24">
             <div className='flex justify-between items-center'>
                 <div className="flex items-center mb-6">
                     <Image width={150} height={150} src={session.user.image} alt="Profile Picture" className="rounded-full w-20 h-20 mr-4" />
@@ -116,13 +114,13 @@ const ProfilePage = () => {
                 </div>
                 <div
                     onClick={() => signOut()}
-                    className='bg-red-700 rounded-lg px-4 py-3 flex gap-4 cursor-pointer text-white h-fit'>
+                    className='bg-red-700 rounded-lg px-4 py-3 flex flex-col md:flex-row gap-4 cursor-pointer text-white h-fit'>
                     <LogOut />
-                    <h3>Log out</h3>
+                    <h3 className='md:text-base text-sm'>Log out</h3>
                 </div>
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+           {userOrders.length === 0? <NoOrder /> : <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
                 <h2 className="bg-gray-100 px-6 py-4 text-lg font-medium">Orders</h2>
                 <div className="px-6 py-4">
                     <table className="w-full">
@@ -154,7 +152,7 @@ const ProfilePage = () => {
                     <p>Total Orders: {userOrders.length}</p>
                     <p>Total Amount Spent: ${totalAmount.toFixed(2)}</p>
                 </div>
-            </div>
+            </div>}
         </div>
     );
 };
