@@ -89,7 +89,7 @@ const ProfilePage = () => {
         );
     }
 
-    NoOrder = () => {
+    const NoOrder = () => {
         return (
             <div className="pt-40 justify-center items-center justify-items-center">
                 <Image 
