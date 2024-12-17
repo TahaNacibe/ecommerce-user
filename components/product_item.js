@@ -213,8 +213,8 @@ function AddToCartButton(productId) {
                  transform hover:translate-y-[-2px] shadow-md hover:shadow-lg ${isInCart? "bg-gray-600" : "bg-black"}
         `}
     >
-      <ShoppingCart className="w-5 h-5" />
-      <span className="font-medium">{isInCart? "In cart" : "Add to Cart" }</span>
+      <ShoppingCart className="md:w-5 md:h-5 w-3 h-3" />
+      <span className="font-medium text-sm md:text-base">{isInCart? "In cart" : "Add to Cart" }</span>
     </button>
   );
 }
